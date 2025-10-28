@@ -7,13 +7,13 @@
 }
 
 body {
-  @apply bg-slate-950 text-slate-100 antialiased;
+  @apply bg-white text-gray-900 antialiased;
 }
 
 a {
-  @apply text-brand transition-colors duration-200;
+  @apply text-blue-600 transition-colors duration-200;
 }
 
 a:hover {
-  @apply text-brand-dark;
+  @apply text-blue-700;
 }
