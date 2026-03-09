@@ -40,6 +40,18 @@ tsconfig.json
 - `npm run start` – Runs the production build (after `npm run build`).
 - `npm run lint` – Executes `next lint`.
 
+## Pass-Driven Local Env
+
+The current demo runs without secrets, but real provider wiring should use local `pass` entries instead of committed env blobs.
+
+```bash
+./scripts/pass-init.sh
+pass edit apps/sonix/local
+./scripts/env-sync.sh
+```
+
+This materializes a local `.env.local` for integrations such as Google Drive or model APIs without committing any secret-bearing env artifact.
+
 ## tRPC Surface
 
 | Procedure                         | Type     | Description                                                         |
@@ -52,7 +64,7 @@ tsconfig.json
 ## Integrating Real Services
 
 1. **Google Drive**  
-   Replace the stub gateway by instantiating a `drive_v3.Drive` client and injecting it via the request context:
+  After generating `.env.local` via `./scripts/env-sync.sh`, replace the stub gateway by instantiating a `drive_v3.Drive` client and injecting it via the request context:
    ```ts
    import { google } from "googleapis";
    import { createDriveClient, createGoogleDriveGateway } from "@/server/services/googleDriveGateway";
@@ -77,6 +89,6 @@ tsconfig.json
 - Hook the Drive gateway to real OAuth/service-account credentials.
 - Add transcription handling (Deepgram/AssemblyAI) and persist transcripts for reuse.
 - Layer LinkedIn + press release generation routes and surface them in the UI.
-- Harden environment management (`.env.local`, `.env.example`) once secrets are introduced.
+- Extend the pass-driven environment workflow as more runtime secrets are introduced.
 
 With the full stack aligned to `2025-market-overload`, `npm run dev` now spins up a working Next.js app that previews Sonix’s ingestion pipeline. Use this as the foundation for the AI generation milestones.***
